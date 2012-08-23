@@ -1,0 +1,204 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Test</title>
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
+<script type='text/javascript' src='https://raw.github.com/wallan/SurveyCode/master/scripts/jquery.gchart.js'></script>
+<script type='text/javascript'>
+$(function () {
+var high = 100;
+var medium = 80;
+var low = 50;
+var none = 0;
+var legHigh = 'Mature';
+var legMed = 'Intermediate';
+var legLow = 'Immature';
+var legYourRes = 'Your Result';
+var MAX_SCORE = 4;
+var highestTotal = 0;
+var grandTotal = 0;
+var percentTotal = 0;
+var cat = '';
+var categories = new Array();
+
+$('#results td').each(function() {     
+    if($(this).hasClass('category')){
+        cat = $(this).text(); 
+        categories[cat] = new Array();
+        categories[cat]['answers'] = new Array();
+    }else if($(this).hasClass('res')){ 
+        categories[cat]['answers'].push($(this).text());
+    }
+});
+insertNumbers();
+for(category in categories){
+    var categoryTotal = 0;
+    for(answer in categories[category]['answers']){
+        categoryTotal += getScore(categories[category]['answers'][answer]);
+    }
+    var categoryMaxScore = MAX_SCORE * categories[category]['answers'].length;
+    categories[category]['percent'] = Math.ceil(categoryTotal / categoryMaxScore * 100);
+    grandTotal += categoryTotal;
+    highestTotal += categoryMaxScore;
+}
+percentTotal = Math.ceil(grandTotal / highestTotal * 100);
+$('#totalScore').text(percentTotal + '%');
+$('#yourTotalScore').text(percentTotal + '%');
+legYourRes += ' ' + percentTotal + '%';
+
+var percent  = getPercentages(categories)
+var count = 0;
+$('.percent').each(function() {     
+    $(this).text(percent[count] + '%');
+    ++count;
+});
+
+$('#area-graph').gchart({
+	type: 'radar', maxValue: 100, series: [
+		$.gchart.series(legHigh, [high, high, high, high, high, high, high, high], '#5ECC59', $.gchart.color('5ECC59', 100) ),
+		$.gchart.series(legMed, [medium, medium, medium, medium, medium, medium, medium, medium ], 'orange', $.gchart.color('orange', 100) ),
+		$.gchart.series(legLow, [low, low, low, low, low, low, low, low ], 'red', $.gchart.color('red', 28)),
+		$.gchart.series(legYourRes, getPercentages(categories), 'blue', $.gchart.color('blue', 100)),
+		$.gchart.series('', [none, none, none, none, none, none, none, none], 'white')],
+	axes: [	
+		$.gchart.axis('bottom', getTitles(categories) , 'black'),
+		$.gchart.axis('left', 0, 100, 10, 'black', 'right')],
+	legend: '', legendOrder: '0,1,2,4,3'});
+});
+
+function insertNumbers(){
+	var count = 1;
+	$('.category').each(function() {     
+	    var temp = $(this).text();
+	    $(this).text(count + ". " + temp)
+	    ++count;
+	});	
+}
+
+function getScore(answer) {
+   switch (answer) {
+      case 'Always':    return 4;
+      case 'Usually':   return 3;
+      case 'Sometimes': return 2;
+      case 'Rarely':    return 1;
+      case 'Never':     return 0;
+      default:          return 0;
+   }
+   return 0;
+}
+function isDeviceMobile(){
+	if($(window).width() < 350){
+     	return true;
+    }
+	return false;
+}
+
+function adjustSize(){
+	var isMobile = isDeviceMobile();
+	if(isMobile){
+		$('#area-graph').addClass('mobile');
+	}
+}
+
+function getTitles(categories){
+	var isMobile = isDeviceMobile();
+	var titles = new Array();
+	var count = 1;
+	for(category in categories){
+		if(isMobile){
+			titles.push(count++ + '.');		
+		}else{
+			titles.push(category + ' ' + categories[category]['percent'] + '%');	
+		}
+	}
+	return titles;
+}
+
+function getPercentages(categories){
+	var percent = new Array();
+	for(category in categories){
+		percent.push(categories[category]['percent']);
+	}
+	for(category in categories){
+		percent.push(categories[category]['percent']);
+		break;
+	}
+	return percent;
+}
+</script>
+<style type='text/css'>
+
+.hasGChart{
+width: 800px;
+height: 400px;
+}
+.box{
+width:10px;
+height:10px;
+line-height:10px;
+font-size:10;
+border-style: solid;
+border-color: black;
+border-width: 1px;
+}
+.legend{
+font-size:13;
+}
+.mobile{
+width:300px;
+height: 300px;
+}
+.title{font-weight: bold;}
+.total{font-size: large;}
+</style>
+</head>
+<body>
+
+<h1>Test</h1>
+<div id='area-graph'></div>
+<table><tr>
+<td> <div class='box' style='background-color:#5ECC59;'>&nbsp;</div></td><td class='legend'>Mature</td>
+<td> <div class='box' style='background-color:orange;'>&nbsp;</dv></td><td class='legend'>Intermediate</td>
+<td> <div class='box' style='background-color:red;'>&nbsp;</div></td><td class='legend'>Immature</td>
+</tr></table><table>
+<tr><td> <div class='box' style='background-color:blue;'>&nbsp;</div></td><td class='legend'>You Result <span id='yourTotalScore'></span></td>
+</tr></table>
+<table id='results'>
+<tbody><tr class='title total'><td>Total Score</td><td id='totalScore'></td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Build and Deploy</td><td class='percent'></td></tr>
+<tr><td>Are builds reliable?</td><td class='res' id='res3'>Always</td></tr>
+<tr><td>Are builds fast?</td><td class='res'  id='res9'>Always</td></tr>
+<tr><td>Is build execution triggered by a simple single command?</td><td class='res' id='res51'>Always</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Configuration Management</td><td class='percent'></td></tr>
+<tr><td>Do developers commit changes into Version Control many times per day?</td><td class='res'  id='res10'>Sometimes</td></tr>
+<tr><td>Are artifacts published and retrieved from a central Artifact Repository?</td><td  class='res' id='res11'>Sometimes</td></tr>
+<tr><td>Are developers aware of codeline policies relating to branches?</td><td class='res' id='res53'>Sometimes</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Testing</td><td class='percent'></td></tr>
+<tr><td>Are Unit Test coverage results visible?</td><td class='res' id='res55'>Usually</td></tr>
+<tr><td>Are automated Functional Test coverage results visible?</td><td class='res' id='res12'>Usually</td></tr>
+<tr><td>Are releases to test good quality?</td><td class='res' id='res56'>Usually</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Deployment</td><td class='percent'></td></tr>
+<tr><td>Are deployments able to run end-to-end without manual intervention?</td><td class='res' id='res13'>Rarely</td></tr>
+<tr><td>Are deployment cycle times visible?</td><td class='res' id='res14'>Rarely</td></tr>
+<tr><td>Are deployment activities triggered by a simple single command?</td><td class='res' id='res58'>Rarely</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Release Management</td><td class='percent'></td></tr>
+<tr><td>Do builds include a list of changesets?</td><td class='res' id='res60'>Never</td></tr>
+<tr><td>Do successful builds mark a label or checkpoint in version control?</td><td class='res' id='res61'>Never</td></tr>
+<tr><td>Do builds include necessary licenses for external dependencies?</td><td class='res' id='res62'>Never</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Environment Management</td><td class='percent'></td></tr>
+<tr><td>Is environment history visible?</td><td class='res' id='res63'>Somtimes</td></tr>
+<tr><td>Are environment changes fast?</td><td class='res' id='res65'>Never</td></tr>
+<tr><td>Are environment changes reliable?</td><td class='res' id='res66'>Rarely</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Environment Provisioning</td><td class='percent'></td></tr>
+<tr><td>Can the provisioning of an environment be self-operated by those that require it?</td><td class='res' id='res17'>Always</td></tr>
+<tr><td>Is environment provisioning fast?</td><td class='res' id='res15'>Never</td></tr>
+<tr><td>Is environment provisioning reliable?</td><td class='res' id='res16'>Somtimes</td></tr>
+</tbody></table>​
+</body></html>
