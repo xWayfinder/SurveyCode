@@ -1,0 +1,89 @@
+Continuous Delivery Assessment Survey
+
+Questions
+
+Please tell us which title most accurately describes your role within the organisation? 
+
+
+Build and Development
+
+1. Are builds reliable?
+Never Rarely Sometimes Usually Always
+
+2. Are builds fast? 
+Never Rarely Sometimes Usually Always
+
+3. Is build execution triggered by a simple single command? 
+Never Rarely Sometimes Usually Always
+
+
+Configuration Management
+
+4. Do developers commit changes into Version Control many times per day? 
+Never Rarely Sometimes Usually Always
+
+5. Are artifacts published and retrieved from a central Artifact Repository? 
+Never Rarely Sometimes Usually Always
+
+6. Are developers aware of codeline policies relating to branches? 
+Never Rarely Sometimes Usually Always
+
+
+Quality Assurance
+
+7. Are Unit Test coverage results visible? 
+Never Rarely Sometimes Usually Always
+
+8. Are automated Functional Test coverage results visible? 
+Never Rarely Sometimes Usually Always
+
+9. Are releases to test good quality? 
+Never Rarely Sometimes Usually Always
+
+
+Deployment
+
+10. Are deployment activities triggered by a simple single command? 
+Never Rarely Sometimes Usually Always
+
+11. Are deployments able to run end-to-end without manual intervention? 
+Never Rarely Sometimes Usually Always
+
+12. Are deployment cycle times visible? 
+Never Rarely Sometimes Usually Always
+
+
+Release Management
+
+13. Do builds include a list of changesets? 
+Never Rarely Sometimes Usually Always
+
+14. Do successful builds mark a label or checkpoint in version control? 
+Never Rarely Sometimes Usually Always
+
+15. Do builds include necessary licenses for external dependencies? 
+Never Rarely Sometimes Usually Always
+
+
+Environment Management
+
+16. Is environment history visible? 
+Never Rarely Sometimes Usually Always
+
+17. Are environment changes fast? 
+Never Rarely Sometimes Usually Always
+
+18. Are environment changes reliable? 
+Never Rarely Sometimes Usually Always
+
+
+Environment Provisioning
+
+19. Can the provisioning of an environment be self-operated by those that require it? 
+Never Rarely Sometimes Usually Always
+
+20. Is environment provisioning fast? 
+Never Rarely Sometimes Usually Always
+
+21. Is environment provisioning reliable? 
+Never Rarely Sometimes Usually Always
