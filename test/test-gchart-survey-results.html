@@ -55,10 +55,8 @@ $('.percent').each(function() {
 
 $('#area-graph').gchart({
 	type: 'radar', maxValue: 100, series: [
-		$.gchart.series(legHigh, [high, high, high, high, high, high, high, high], '#5ECC59', $.gchart.color('5ECC59', 100) ),
-		$.gchart.series(legMed, [medium, medium, medium, medium, medium, medium, medium, medium ], 'orange', $.gchart.color('orange', 100) ),
-		$.gchart.series(legLow, [low, low, low, low, low, low, low, low ], 'red', $.gchart.color('red', 28)),
-		$.gchart.series(legYourRes, getPercentages(categories), 'blue', $.gchart.color('blue', 100)),
+		$.gchart.series(legHigh, [high, high, high, high, high, high, high, high], $.gchart.color('5ECC59', 30), $.gchart.color('5ECC59', 50) ),
+		$.gchart.series(legYourRes, getPercentages(categories), 'transparent', $.gchart.color('blue', 180)),
 		$.gchart.series('', [none, none, none, none, none, none, none, none], 'white')],
 	axes: [	
 		$.gchart.axis('bottom', getTitles(categories) , 'black'),

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>My Test</title>
+<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+<style type="text/css">
+body{font-family:Arial,Helvetica,FreeSans,sans-serif;}
+.tooltip{
+  text-align: center;
+  color: black;
+  display: none;
+  position: absolute;
+}
+.tooltip .text{
+  background-color: #F7FCFF;
+  /* color:white; */
+  border-color:lightgrey;
+  border-style: solid;
+  border-width: 2px;
+  padding: 10px;
+  margin-top: 0px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 10px 10px 5px #888;
+-webkit-box-shadow: 10px 10px 5px #888;
+box-shadow: 10px 10px 5px #888;
+}
+.tooltip .arrow {margin-bottom: 8px;margin-top: -5px;}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.tooltip').each(function(){				
+		$(this).before('<a class=\'special\'>Why is this important?</a>');
+	});
+	$('.special').hover(function() {
+	    $('.tooltip').stop();
+	    if($(this).next(".tooltip").prop("tagName") != undefined){
+	    	$(this).next(".tooltip").show();
+	    }else if($(this).parent().next(".tooltip").prop("tagName") != undefined){
+	    	$(this).parent().next(".tooltip").show(); 
+	 	}	    	
+	  });
+	 $('.special').mouseleave(function(){
+			  $('.tooltip').hide();
+	 });
+});
+</script>
+</head>
+<body>
+<h1>My Test</h1>
+<p>Show me that cool</p>
+<div class='tooltip'>
+  <!--  <div class=arrow>▲</div>-->
+  <div class=text>This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool This is so cool </div>
+</div>
+</body>
+</html>
