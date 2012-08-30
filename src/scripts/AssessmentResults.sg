@@ -151,21 +151,24 @@ font-weight: lighter;
 color: grey;
 }
 </style>
+
 <div class='sg-question'>
-<p>The following Radar Chart maps the Continuous Delivery maturity of your organization, represented by the blue coloured area. The maturity for each discipline is represented one per radii.</p>
+<p>Thank you for your input. Based on your answers, we can construct a custom visualisation of the Continuous Delivery maturity of your organisation. The green shape represents an optimal state of total maturity. Your capabilities are represented in blue. The radar chart is divided into segments representing key functional areas of software delivery. Use the individual score in each area to identify the best opportunities to initiate change. For a further detailed assessment be sure to complete the Contact form.</p>
 <div id='area-graph'></div>
 <table>
-<tr><td> <div class='box' style='background-color:blue;'> </div></td><td class='legend'>Your Average Maturity <span id='yourTotalScore'></span></td>
+<tr><td> <div class='box' style='background-color:blue;'></div></td><td class='legend'>Your Average Maturity <span id='yourTotalScore'></span></td>
 </tr></table>
-<p>Low maturity is indicated towards the centre of the circle while high maturity is indicated towards the circumference. Investing in your lowest scoring discipline will yield the greatest ROI in your organisation.</p>
+
+<p>Odecee can conduct a further detailed assessment enabling your organisation to focus on the areas that will yield the greatest return on investment, building a road-map to hone your Continuous Delivery capability.</p>
 <div style='padding-left: 5px;'>
 <h2>Want a more detailed evaluation? We can help!<sup>*</sup></h2>
 <h3>Contact Us!</h3>
-<p class='disclaimer'>* A survey like this is very limited. Organisations are unique and face unique challenges. Odecee has the experience and expertise to help you strengthen your Software Delivery capabilities. Contact us throught the form below to obtain more information:</p>
+<p>For an further detailed assessment of your Continuous Delivery capabilities complete the form below</p>
 </div>
 <iframe id='contactUs' height='300px' allowtransparency='true' frameborder='0' scrolling='no' style='border:none' 
 src='https://forms.netsuite.com/app/site/crm/externalleadpage.nl?compid=3374398&formid=10&h=604a09cada46e2d0abaa&salutation=&firstname=&lastname=&email=".sgapiGetValue(28)."&mobilephone=&companyname=&title=".sgapiGetValue(29)."&comments=&custentitycdmassurveyid=".sgapiGetValue(28)."' name='contactUs'></iframe>
 <br/>
+<p class='disclaimer'>* A survey like this is very limited. Organisations are unique and face unique challenges. Odecee has the experience and expertise to help you strengthen your Software Delivery capabilities.</p>
 <table id='results'>
 <tbody><tr class='title total'><td>Total Score</td><td id='totalScore'></td></tr>
 <tr><td colspan='2'><br></td></tr>
@@ -205,4 +208,4 @@ src='https://forms.netsuite.com/app/site/crm/externalleadpage.nl?compid=3374398&
 <tr><td>".sgapiGetTitle(17)."</td><td class='res' id='res17'>".sgapiGetValue(17)."</td></tr>
 <tr><td>".sgapiGetTitle(15)."</td><td class='res' id='res15'>".sgapiGetValue(15)."</td></tr>
 <tr><td>".sgapiGetTitle(16)."</td><td class='res' id='res16'>".sgapiGetValue(16)."</td></tr>
-</tbody></table>​</div>";
+</tbody></table></div>";
