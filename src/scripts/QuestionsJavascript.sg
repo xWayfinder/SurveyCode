@@ -1,0 +1,25 @@
+$(document).ready(function(){
+	if($(window).width() > 350){
+	       $('.bottomless').css("border-bottom-style","none");
+	      /* $('.sg-page-title').remove();*/
+	}else{
+		$('.sg-list-horizontal-flipped').removeClass('sg-list-horizontal');
+	}
+	$('.tooltip').each(function(){				
+		$(this).before('<a class=\'special\'>Why is this important?</a>');
+	});
+	$('.special').hover(function() {
+	    $('.tooltip').stop();
+	    if($(this).next(".tooltip").prop("tagName") != undefined){
+	    	$(this).next(".tooltip").show();
+	    }else if($(this).parent().next(".tooltip").prop("tagName") != undefined){
+	    	$(this).parent().next(".tooltip").show(); 
+	 	}	    	
+	  });
+	 $('.special').mouseleave(function(){
+		$('.tooltip').hide();
+	 });
+        $(document).click(function (e) {
+		$('.tooltip:visible').hide();
+	});
+});

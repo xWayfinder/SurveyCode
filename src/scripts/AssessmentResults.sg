@@ -1,0 +1,208 @@
+%%output = "
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
+<script type='text/javascript' src='https://raw.github.com/wallan/SurveyCode/master/scripts/jquery.gchart.js'></script>
+<script type='text/javascript'>
+$(function () {
+var high = 100;
+var medium = 80;
+var low = 50;
+var none = 0;
+var legHigh = 'Mature';
+var legMed = 'Intermediate';
+var legLow = 'Immature';
+var legYourRes = 'Your Result';
+var MAX_SCORE = 4;
+var highestTotal = 0;
+var grandTotal = 0;
+var percentTotal = 0;
+var cat = '';
+var categories = new Array();
+
+if($(window).width() > 350){
+   $('head').append('<style type=text/css>.hasGChart{width: 800px;height: 400px;}</style>');
+}else{
+   $('head').append('<style type=text/css>.hasGChart{width: 400px;height: 300px;}</style>');
+}
+
+$('#results td').each(function() {     
+    if($(this).hasClass('category')){
+        cat = $(this).text(); 
+        categories[cat] = new Array();
+        categories[cat]['answers'] = new Array();
+    }else if($(this).hasClass('res')){ 
+        categories[cat]['answers'].push($(this).text());
+    }
+});
+insertNumbers();
+for(category in categories){
+    var categoryTotal = 0;
+    for(answer in categories[category]['answers']){
+        categoryTotal += getScore(categories[category]['answers'][answer]);
+    }
+    var categoryMaxScore = MAX_SCORE * categories[category]['answers'].length;
+    categories[category]['percent'] = Math.ceil(categoryTotal / categoryMaxScore * 100);
+    grandTotal += categoryTotal;
+    highestTotal += categoryMaxScore;
+}
+percentTotal = Math.ceil(grandTotal / highestTotal * 100);
+$('#totalScore').text(percentTotal + '%');
+$('#yourTotalScore').text(percentTotal + '%');
+legYourRes += ' ' + percentTotal + '%';
+
+var percent  = getPercentages(categories)
+var count = 0;
+$('.percent').each(function() {     
+    $(this).text(percent[count] + '%');
+    ++count;
+});
+
+$('#area-graph').gchart({
+	type: 'radar', maxValue: 100, series: [
+		$.gchart.series(legHigh, [high, high, high, high, high, high, high, high], $.gchart.color('5ECC59', 30), $.gchart.color('5ECC59', 50) ),
+		$.gchart.series(legYourRes, getPercentages(categories), 'transparent', $.gchart.color('blue', 180)),
+		$.gchart.series('', [none, none, none, none, none, none, none, none], 'white')],
+	axes: [	
+		$.gchart.axis('bottom', getTitles(categories) , 'black'),
+		$.gchart.axis('left', 0, 100, 10, 'black', 'right')],
+	legend: '', legendOrder: '0,1,2,4,3'});
+});
+adjustSize();
+function insertNumbers(){
+	var count = 1;
+	$('.category').each(function() {     
+	    var temp = $(this).text();
+	    $(this).text(count + '. ' + temp)
+	    ++count;
+	});	
+}
+
+function getScore(answer) {
+   switch (answer) {
+      case 'Always':    return 4;
+      case 'Usually':   return 3;
+      case 'Sometimes': return 2;
+      case 'Rarely':    return 1;
+      case 'Never':     return 0;
+      default:          return 0;
+   }
+   return 0;
+}
+function isDeviceMobile(){
+	if($(window).width() < 350){
+     	return true;
+    }
+	return false;
+}
+function adjustSize(){
+	var isMobile = isDeviceMobile();
+	if(isMobile){
+		$('#area-graph').addClass('mobile');
+	}
+}
+function getTitles(categories){
+	var isMobile = isDeviceMobile();
+	var titles = new Array();
+	var count = 1;
+	for(category in categories){
+		if(isMobile){
+			titles.push(count++ + '.');		
+		}else{
+			titles.push(category + ' ' + categories[category]['percent'] + '%');	
+		}
+	}
+	return titles;
+}
+function getPercentages(categories){
+	var percent = new Array();
+	for(category in categories){
+		percent.push(categories[category]['percent']);
+	}
+	for(category in categories){
+		percent.push(categories[category]['percent']);
+		break;
+	}
+	return percent;
+}
+</script>
+<style type='text/css'>
+.box{
+width:10px;
+height:10px;
+line-height:10px;
+font-size:10;
+border-style: solid;
+border-color: black;
+border-width: 1px;
+}
+.legend{
+font-size:13;
+}
+.mobile{
+width:300px;
+height: 300px;
+}
+/*.sg-page-title{visibility: hidden;}*/
+.title{font-weight: bold;}
+.total{font-size: large;}
+.disclaimer{
+font-size: 14px;
+font-style: italic;
+font-weight: lighter;
+color: grey;
+}
+</style>
+<div class='sg-question'>
+<p>The following Radar Chart maps the Continuous Delivery maturity of your organization, represented by the blue coloured area. The maturity for each discipline is represented one per radii.</p>
+<div id='area-graph'></div>
+<table>
+<tr><td> <div class='box' style='background-color:blue;'> </div></td><td class='legend'>Your Average Maturity <span id='yourTotalScore'></span></td>
+</tr></table>
+<p>Low maturity is indicated towards the centre of the circle while high maturity is indicated towards the circumference. Investing in your lowest scoring discipline will yield the greatest ROI in your organisation.</p>
+<div style='padding-left: 5px;'>
+<h2>Want a more detailed evaluation? We can help!<sup>*</sup></h2>
+<h3>Contact Us!</h3>
+<p class='disclaimer'>* A survey like this is very limited. Organisations are unique and face unique challenges. Odecee has the experience and expertise to help you strengthen your Software Delivery capabilities. Contact us throught the form below to obtain more information:</p>
+</div>
+<iframe id='contactUs' height='300px' allowtransparency='true' frameborder='0' scrolling='no' style='border:none' 
+src='https://forms.netsuite.com/app/site/crm/externalleadpage.nl?compid=3374398&formid=10&h=604a09cada46e2d0abaa&salutation=&firstname=&lastname=&email=".sgapiGetValue(28)."&mobilephone=&companyname=&title=".sgapiGetValue(29)."&comments=&custentitycdmassurveyid=".sgapiGetValue(28)."' name='contactUs'></iframe>
+<br/>
+<table id='results'>
+<tbody><tr class='title total'><td>Total Score</td><td id='totalScore'></td></tr>
+<tr><td colspan='2'><br></td></tr>
+
+<tr class='title'><td class='category'>Build and Develeopment</td><td class='percent'></td></tr>
+
+<tr><td>".sgapiGetTitle(3)."</td><td class='res' id='res3'>".sgapiGetValue(3)."</td></tr>
+<tr><td>".sgapiGetTitle(9)."</td><td class='res'  id='res9'>".sgapiGetValue(9)."</td></tr>
+<tr><td>".sgapiGetTitle(51)."</td><td class='res' id='res51'>".sgapiGetValue(51)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Configuration Management</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(10)."</td><td class='res'  id='res10'>".sgapiGetValue(10)."</td></tr>
+<tr><td>".sgapiGetTitle(11)."</td><td  class='res' id='res11'>".sgapiGetValue(11)."</td></tr>
+<tr><td>".sgapiGetTitle(53)."</td><td class='res' id='res53'>".sgapiGetValue(53)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Testing</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(55)."</td><td class='res' id='res55'>".sgapiGetValue(55)."</td></tr>
+<tr><td>".sgapiGetTitle(12)."</td><td class='res' id='res12'>".sgapiGetValue(12)."</td></tr>
+<tr><td>".sgapiGetTitle(56)."</td><td class='res' id='res56'>".sgapiGetValue(56)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Deployment</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(13)."</td><td class='res' id='res13'>".sgapiGetValue(13)."</td></tr>
+<tr><td>".sgapiGetTitle(14)."</td><td class='res' id='res14'>".sgapiGetValue(14)."</td></tr>
+<tr><td>".sgapiGetTitle(58)."</td><td class='res' id='res58'>".sgapiGetValue(58)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Release Management</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(60)."</td><td class='res' id='res60'>".sgapiGetValue(60)."</td></tr>
+<tr><td>".sgapiGetTitle(61)."</td><td class='res' id='res61'>".sgapiGetValue(61)."</td></tr>
+<tr><td>".sgapiGetTitle(62)."</td><td class='res' id='res62'>".sgapiGetValue(62)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Environment Management</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(63)."</td><td class='res' id='res63'>".sgapiGetValue(63)."</td></tr>
+<tr><td>".sgapiGetTitle(65)."</td><td class='res' id='res65'>".sgapiGetValue(65)."</td></tr>
+<tr><td>".sgapiGetTitle(66)."</td><td class='res' id='res66'>".sgapiGetValue(66)."</td></tr>
+<tr><td colspan='2'><br></td></tr>
+<tr class='title'><td class='category'>Environment Provisioning</td><td class='percent'></td></tr>
+<tr><td>".sgapiGetTitle(17)."</td><td class='res' id='res17'>".sgapiGetValue(17)."</td></tr>
+<tr><td>".sgapiGetTitle(15)."</td><td class='res' id='res15'>".sgapiGetValue(15)."</td></tr>
+<tr><td>".sgapiGetTitle(16)."</td><td class='res' id='res16'>".sgapiGetValue(16)."</td></tr>
+</tbody></table>​</div>";
